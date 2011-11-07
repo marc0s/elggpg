@@ -1,0 +1,4 @@
+
+.pgparmor {
+  float: left;
+}
