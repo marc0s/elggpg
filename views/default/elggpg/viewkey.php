@@ -27,32 +27,72 @@ try {
 	$comment = $info[0]['uids'][0]['comment'];
 	$email = $info[0]['uids'][0]['email'];
 	$fingerprint = $info[0]['subkeys'][0]['fingerprint'];
-	$raw_url = elgg_get_site_url(). '/elggpg/raw/' . $currentuser->username;
 	
 	if (strlen($fingerprint) < 1) {
 		throw new Exception();
 	}
+	
 } catch (Exception $e) {
 	echo '<p>'. elgg_echo("elggpg:nopublickey") . '</p>';
 	return false;
 }
 
-echo "<strong>$fingerprint</strong>";
-echo "<a href=\"$raw_url\"> [".elgg_echo('elggpg:download')."]</a><br/>";
+$key_id  = elgg_echo('elggpg:keyid');
+$type    = elgg_echo('elggpg:type');
+$created = elgg_echo('elggpg:created');
+$expires = elgg_echo('elggpg:expires');
+
+echo <<<HTML
+<div class="elgg-elggpg elgg-output">
+	<dl>
+		<dt>Name</dt>
+		<dd>$name</dd>
+	</dl>
+	<dl>
+		<dt>E-mail</dt>
+		<dd>$email</dd>
+	</dl>
+	<dl>
+		<dt>Comment</dt>
+		<dd>$comment</dd>
+	</dl>
+	<dl>
+		<dt>Fingerprint</dt>
+		<dd>$fingerprint</dd>
+	</dl>
+	<br/>
+	<h3>Subkeys</h3>
+	<table class="elgg-table mtm">
+	<th>$key_id</th><th>$type</th><th>$created</th><th>$expires</th>
+HTML;
 
 foreach ($info[0]['subkeys'] as $subkey) {
-	if ($subkey['can_encrypt']) {
-		
-	}
+	
+	$keyid = $subkey["keyid"];
 
-	echo elgg_echo('elggpg:created').": ".date('d M Y', $subkey['timestamp'])."<br />";
+	$created = date('d M Y', $subkey['timestamp']);
 	
 	if ($subkey['expires']) {
-		echo elgg_echo('elggpg:expires').": ".date('d Y M', $subkey['expires'])."<br/>";
+		$expires = date('d M Y', $subkey['expires']);
 	} else {
-		echo elgg_echo('elggpg:expires').": ".elgg_echo('elggit gpg:expires:never')."<br/>";
+		$expires = elgg_echo('elggpg:expires:never');
 	}
 	
-	echo elgg_echo("elggpg:keyid").": ".$subkey["keyid"]."<br />";
-
+	if ($subkey['can_encrypt']) {
+		$type = elgg_echo('elggpg:encrypt');
+	} elseif ($subkey['can_decrypt']) {
+		$type = elgg_echo('elggpg:decrypt');
+	} else {
+		$type = elgg_echo('elggpg:encrypt') . " & " . elgg_echo('elggpg:decrypt');
+	}
+	
+	echo <<<HTML
+	<tr><td>$keyid</td><td>$type</td><td>$created</td><td>$expires</td></tr>
+HTML;
+	
 }
+
+echo <<<HTML
+</table>
+</div>
+HTML;
