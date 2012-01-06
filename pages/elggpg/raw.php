@@ -4,14 +4,12 @@
  *
  * @package ElggPG
  */
-  
-if (!elgg_is_logged_in()) {
+
+$user = get_user_by_username(get_input('username'));
+if (!elgg_is_logged_in() || !$user) {
 	forward();
 }
 
-putenv("GNUPGHOME=" . elggpg_get_gpg_home());
-$gnupg = new gnupg();
-
 header("Content-type: text/plain");
-$user = get_user_by_username(get_input('username'));
-echo $gnupg->export($user->openpgp_publickey);
+elgg_load_library('elggpg');
+echo elggpg_export_key($user);

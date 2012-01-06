@@ -12,6 +12,9 @@ elgg_register_event_handler('init', 'system', 'elggpg_init');
  */
 function elggpg_init() {
 	
+	// Register library
+	elgg_register_library('elggpg', elgg_get_plugins_path() . 'elggpg/lib/elggpg.php');
+	
 	// Extend CSS
 	elgg_extend_view('css/elgg', 'elggpg/css');
 	
@@ -57,23 +60,6 @@ function elggpg_page_handler($page) {
 	return true;
 }
 
-function elggpg_get_gpg_home() {
-	// try to find location of settings from environment file,
-	// which means the gpg directory goes at the same level.
-	$elgg_config = getenv("elgg_config");
-	if ($elgg_config && is_dir(dirname($elgg_config)."/gpg")) {
-		return dirname($elgg_config)."/gpg";
-	}
-	
-	// otherwise create a gpg folder at the data folder
-	// and store the keys there
-	$gpg_path = elgg_get_data_path() . "gpg/";
-	if (!file_exists($gpg_path)) {
-		mkdir($gpg_path);
-	}
-	return $gpg_path;
-}
-
 function elggpg_send_email_handler($hook, $type, $return, $params) {
 	$from = $params['from'];
 	$to = $params['to'];
@@ -90,17 +76,8 @@ function elggpg_send_email_handler($hook, $type, $return, $params) {
 	$body = wordwrap($body);
 	
 	// Trying to encrypt
-	try {
-		if (strpos($body, "-----BEGIN PGP MESSAGE-----") === false) {
-			putenv("GNUPGHOME=".elggpg_get_gpg_home());
-			$gpg = new gnupg();
-			$gpg->addencryptkey($receiver->openpgp_publickey);
-			if ($encrbody = $gpg->encrypt($body)) {
-				$body = $encrbody;
-			}
-		}
-	} catch (Exception $e) {
-	}
+	elgg_load_library('elggpg');
+	$body = elggpg_encrypt($body, $receiver, false);
 
 	// The following code is the same that in elgg's
 	
@@ -154,6 +131,7 @@ function elggpg_owner_block_menu($hook, $type, $return, $params) {
 		} else {
 			$item = new ElggMenuItem('elggpg', elgg_echo('elggpg:view'), $url);
 		}
+		$item->setSection('manage');
 		$return[] = $item;
 	}
 	return $return;

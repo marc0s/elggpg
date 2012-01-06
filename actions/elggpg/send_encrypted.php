@@ -32,29 +32,10 @@ if (!$body || !$subject) {
 
 // Otherwise, encrypt and 'send' the message 
 
-putenv("GNUPGHOME=".elggpg_get_gpg_home());
-$gpg = new gnupg();
-
-try {
-	$gpg->addencryptkey(elgg_get_logged_in_user_entity()->openpgp_publickey);
-	if ($encrbody = $gpg->encrypt(strip_tags($body))) {
-		$body_from = $encrbody;
-	}
-} catch (Exception $e) {
-}
-$body_from = $body;
-	
-$gpg->cleardecryptkeys();
-
-// FIXME Encrypting do not works
-try {
-	$gpg->addencryptkey($user->openpgp_publickey);
-	if ($encrbody = $gpg->encrypt(strip_tags($body))) {
-		$body_to = $encrbody;
-	}
-} catch (Exception $e) {
-}
-$body_to = $body;
+elgg_load_library('elggpg');
+// FIXME
+$body_from = elggpg_encrypt($body, elgg_get_logged_in_user_entity(), false);
+$body_to   = elggpg_encrypt($body, $user, false);
 
 // TODO: messages_send saves two copies of the message. In previous version of the
 // elggpg plugin, this function was overriden to allow save both versions encrypted
