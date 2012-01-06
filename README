@@ -1,9 +1,10 @@
 GPG Support for elgg
 ------------------------
 
-1. Requires php-gnupg.
-2. pecl install gnupg.
-3. Place the plugin under elgg/mod/elggpg
+1. Requires libgpgme11-dev package (Debian)
+2. sudo pecl install gnupg
+3. Write this line in php.ini: extension=gnupg.so
+4. Place the plugin under elgg/mod/elggpg
 
 NOTES:
 ------------------------
