@@ -28,7 +28,7 @@ function elggpg_init() {
 	
 	// Actions
 	$actions_path = elgg_get_plugins_path() . 'elggpg/actions/elggpg';
-	elgg_register_action("elggpg/pub_key_upload", "$actions_path/pub_key_upload.php");
+	elgg_register_action("elggpg/pubkey_upload", "$actions_path/pubkey_upload.php");
 	elgg_register_action("elggpg/send", "actions_path/send_encrypted.php");
 
 	// add a GPG link to owner blocks
