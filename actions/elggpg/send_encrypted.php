@@ -34,8 +34,12 @@ if (!$body || !$subject) {
 
 elgg_load_library('elggpg');
 // FIXME
-$body_from = elggpg_encrypt($body, elgg_get_logged_in_user_entity(), false);
-$body_to   = elggpg_encrypt($body, $user, false);
+if (elgg_get_plugin_user_setting('encrypt_site_messages', elgg_get_logged_in_user_guid(), 'elggpg') == 'yes') {
+	$body_from = elggpg_encrypt($body, elgg_get_logged_in_user_entity(), false);
+}
+if (elgg_get_plugin_user_setting('encrypt_site_messages', $user->guid, 'elggpg') == 'yes') {
+	$body_to = elggpg_encrypt($body, $user, false);
+}
 
 // TODO: messages_send saves two copies of the message. In previous version of the
 // elggpg plugin, this function was overriden to allow save both versions encrypted

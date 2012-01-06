@@ -75,6 +75,10 @@ function elggpg_export_key($user) {
 	return $gpg->export($user->openpgp_publickey);
 }
 
+function elggpg_haskey($user) {
+	return $user->openpgp_publickey;
+}
+
 function elggpg_keyinfo($user) {
 	$gnupg = new gnupg();
 

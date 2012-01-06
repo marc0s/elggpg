@@ -34,6 +34,8 @@
 		'elggpg:deleted' => 'Deleted public key',
 		'elggpg:delete:error' => 'Error while deleting public key',
 		'elggpg:messageforyou'=>'The message below has been encrypted for you',
+		'elggpg:encrypt:emails' => 'Do you want to receive all our e-mails encrypted with your GPG key?',
+		'elggpg:encrypt:site_messages' => 'Also all private messages?',
 		'elggpg:import:report'=>'[imported] => %d\n[unchanged] => %d\n    [newuserids] => %d\n    [newsubkeys] => %d\n    [secretimported] => %d\n    [secretunchanged] => %d\n    [newsignatures] => %d\n    [skippedkeys] => %d\n    [fingerprint] => %d' 
 	);
 					
