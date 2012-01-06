@@ -1,6 +1,6 @@
 <?php
 /**
- * External pages menu
+ * View key view
  *
  * @uses $vars['user'] The user entity
  * 
@@ -50,7 +50,7 @@ foreach ($info[0]['subkeys'] as $subkey) {
 	if ($subkey['expires']) {
 		echo elgg_echo('elggpg:expires').": ".date('d Y M', $subkey['expires'])."<br/>";
 	} else {
-		echo elgg_echo('elggpg:expires').": ".elgg_echo('elggpg:expires:never')."<br/>";
+		echo elgg_echo('elggpg:expires').": ".elgg_echo('elggit gpg:expires:never')."<br/>";
 	}
 	
 	echo elgg_echo("elggpg:keyid").": ".$subkey["keyid"]."<br />";

@@ -17,6 +17,10 @@ elgg_push_breadcrumb(elgg_echo('elggpg:manage'));
 $title = elgg_echo("elggpg:manage:header");
 $content = elgg_view("elggpg/viewkey", array('user' => $owner));
 
+if($owner->guid == elgg_get_logged_in_user_guid()) {
+	$content .= elgg_view_form("elggpg/upload_pubkey", array('enctype' => "multipart/form-data"), array());
+}
+
 $body = elgg_view_layout('content', array(
 	'title' => $title,
 	'content' => $content,
