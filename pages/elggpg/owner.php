@@ -1,40 +1,26 @@
 <?php
+/**
+ * Upload a gpg key page
+ *
+ * @package ElggPG
+ */
 
-	/**
-	 * Elgg upload new profile icon
-	 * 
-	 * @package ElggProfile
-	 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
-	 * @author Curverider Ltd <info@elgg.com>
-	 * @copyright Curverider Ltd 2008-2010
-	 * @link http://elgg.com/
-	 */
+$owner = elgg_get_page_owner_entity();
+if (!$owner || !elgg_instanceof($owner, 'user')) {
+	forward();
+}
 
-	// Make sure we're logged in
-	if (!isloggedin()) {
-		forward();
-	}
+elgg_push_breadcrumb(elgg_echo('members'), "members");
+elgg_push_breadcrumb($owner->name, $owner->getURL());
+elgg_push_breadcrumb(elgg_echo('elggpg:manage'));
 
-	// Get owner of profile - set in page handler
-	$user = page_owner_entity();
-	if (!$user) {
-		register_error(elgg_echo("profile:notfound"));
-		forward();
-	}
+$title = elgg_echo("elggpg:manage:header");
+$content = elgg_view("elggpg/viewkey", array('user' => $owner));
 
-	// check if logged in user can edit this profile icon
-	if (!$user->canEdit()) {
-		register_error(elgg_echo("profile:icon:noaccess"));
-		forward();
-	}
-	
-	// set title
-	$area2 = elgg_view_title(elgg_echo('elggpg:manage:header'));
-	$area2 .= elgg_view("elggpg/viewkey", array('user' => $user));
-	
-	// Get the form and correct canvas area
-	$body = elgg_view_layout("two_column_left_sidebar", '', $area2);
-	
-	// Draw the page
-	page_draw(elgg_echo("elggpg:manage"), $body);
-?>
+$body = elgg_view_layout('content', array(
+	'title' => $title,
+	'content' => $content,
+	'filter' => '',
+));
+
+echo elgg_view_page($title, $body);

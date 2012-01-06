@@ -1,26 +1,15 @@
 <?php
+/**
+ * External pages menu
+ *
+ * @uses $vars['user'] The user entity
+ * @uses $vars['url']  The site url
+ */
 
-	/**
-	 * Elgg gpg plugin
-	 * 
-	 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
-	 * @author Rhizomatik
-	 * @copyright Pablo Martin 2010
-	 * @link http://bitbucket.org/rhizomatik/elggpg/
-	 * 
-	 * @uses $vars['user'] The user entity
-	 * @uses $vars['url'] The site url
-	 */
+// user is passed to view and set by caller (normally the page editicon)
+$currentuser = $vars['user'];
 
-	// user is passed to view and set by caller (normally the page editicon)
-	$currentuser = $vars['user'];
-  var_dump($currentuser->openpgp_publickey);
 
-?>
-<!-- grab the required js for icon cropping -->
-<div class="contentWrapper">
-
-<?php
 // new class
 putenv("GNUPGHOME=".elggpg_get_gpg_home());
 $gnupg = new gnupg();
@@ -82,7 +71,7 @@ if ($currentuser == $_SESSION['user']) {
 	<div>
     <label><?php echo elgg_echo("elggpg:upload"); ?></label><br />
 		<?php
-			echo elgg_view("input/file",array('internalname' => 'public_key'));
+			echo elgg_view("input/file",array('name' => 'public_key'));
 		?>
 		<input type="submit" class="elgg-button elgg-button-submit" value="<?php echo elgg_echo("upload"); ?>" />
     <br />
@@ -104,7 +93,3 @@ if ($currentuser == $_SESSION['user']) {
   catch (Exception $e) {
   }
 }
-?>
-
-<div class="clearfloat"></div>
-</div>
