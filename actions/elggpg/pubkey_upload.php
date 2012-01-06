@@ -24,7 +24,7 @@ function import_report($info) {
 		$info['newsignatures']   ? $yes : $no,
 		$info['skippedkeys']     ? $yes : $no,
 		$info['fingerprint'],
-	));
+	)));
 }
 
 $user = get_user_by_username(get_input('username'));

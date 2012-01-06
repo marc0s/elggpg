@@ -30,6 +30,8 @@
 		'elggpg:keyid'=>'Key ID',
 		'elggpg:expires:never'=>'Never',
 		'elggpg:delete:confirm' => 'If you delete the GPG key, you will receive unencrypted messages since now',
+		'elggpg:deleted' => 'Deleted public key',
+		'elggpg:delete:error' => 'Error while deleting public key',
 		'elggpg:messageforyou'=>'The message below has been encrypted for you',
 		'elggpg:import:report'=>'[imported] => %d\n[unchanged] => %d\n    [newuserids] => %d\n    [newsubkeys] => %d\n    [secretimported] => %d\n    [secretunchanged] => %d\n    [newsignatures] => %d\n    [skippedkeys] => %d\n    [fingerprint] => %d' 
 	);
