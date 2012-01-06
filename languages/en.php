@@ -1,6 +1,7 @@
 <?php
 
 	$english = array(
+		'elggpg' => 'gpg key',
 		'elggpg:profileinstructions'=>'This is your public key information',
 		'elggpg:identity'=>'Associated identity',
 		'elggpg:manage'=>'Manage encryption',
@@ -8,7 +9,7 @@
 		'elggpg:download'=>'Download',
 		'elggpg:date'=>'Date',
 		'elggpg:size'=>'Size',
-		'elggpg:river:addkey'=>'%s uploaded her gpg key',
+		'river:addkey:user:default'=>'%s uploaded her %s',
 		'elggpg:public_key:imported'=>'Key imported',
 		'elggpg:sendamessage'=>'Send an encrypted message',
 		'elggpg:view'=>'View encryption keys',
