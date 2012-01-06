@@ -78,48 +78,50 @@ function elggpg_export_key($user) {
 function elggpg_keyinfo($user) {
 	$gnupg = new gnupg();
 
-	$user_fp = current(elgg_get_metadata(array(
-		'guid' => $currentuser->guid,
-		'metadata_name' => 'openpgp_publickey',
-	)));
+	$fingerprint = $user->openpgp_publickey;
+	
+	if (!$fingerprint) {
+		return false;
+	}
 
 	try {
 		
-		$info = $gnupg->keyinfo($user_fp->value);
-		
-		$simple_info = array(
-			'name'        => $info[0]['uids'][0]['name'],
-			'comment'     => $info[0]['uids'][0]['comment'],
-			'email'       => $info[0]['uids'][0]['email'],
-			'fingerprint' => $info[0]['subkeys'][0]['fingerprint'],
-			'subkeys'     => array(),
-		);
-		
-		if (strlen($simple_info['fingerprint']) < 1) {
-			throw new Exception();
-		}
-		
-		foreach ($info[0]['subkeys'] as $subkey) {
-			if ($subkey['can_encrypt']) {
-				$type = 'encrypt';
-			}
-			if ($subkey['can_sign']) {
-				$type .= 'sign';
-			}
-			
-			$simple_info['subkeys'][] = array(
-				'keyid'   => $subkey['keyid'],
-				'type'    => $type,
-				'created' => $subkey['timestamp'],
-				'expires' => $subkey['expires'],
-			);
-		}
-		
-		return $simple_info;
+		$info = $gnupg->keyinfo($fingerprint);
 		
 	} catch (Exception $e) {
 		return false;
 	}
+		
+	$simple_info = array(
+		'name'        => $info[0]['uids'][0]['name'],
+		'comment'     => $info[0]['uids'][0]['comment'],
+		'email'       => $info[0]['uids'][0]['email'],
+		'fingerprint' => $info[0]['subkeys'][0]['fingerprint'],
+		'subkeys'     => array(),
+	);
+	
+	if (strlen($simple_info['fingerprint']) < 1) {
+		return false;
+	}
+	
+	foreach ($info[0]['subkeys'] as $subkey) {
+		if ($subkey['can_encrypt']) {
+			$type = 'encrypt';
+		}
+		if ($subkey['can_sign']) {
+			$type .= 'sign';
+		}
+		
+		$simple_info['subkeys'][] = array(
+			'keyid'   => $subkey['keyid'],
+			'type'    => $type,
+			'created' => $subkey['timestamp'],
+			'expires' => $subkey['expires'],
+		);
+	}
+	
+	return $simple_info;
+	
 }
 
 function elggpg_delete_key($user) {
