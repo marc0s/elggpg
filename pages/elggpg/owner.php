@@ -51,6 +51,7 @@ if (!empty($owner->openpgp_publickey)) {
 $body = elgg_view_layout('content', array(
 	'title' => $title,
 	'content' => $content,
+	'sidebar' => elgg_view('elggpg/sidebar'),
 	'filter' => '',
 ));
 
