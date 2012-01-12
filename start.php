@@ -54,6 +54,10 @@ function elggpg_page_handler($page) {
 			set_input('username', $page[1]);
 			include("$pages_dir/raw.php");
 			break;
+		case 'download':
+			set_input('username', $page[1]);
+			include("$pages_dir/download.php");
+			break;
 		default:
 			return false;
 	}

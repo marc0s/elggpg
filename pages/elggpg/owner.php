@@ -42,7 +42,7 @@ if($owner->guid == elgg_get_logged_in_user_guid()) {
 if (!empty($owner->openpgp_publickey)) {
 	elgg_register_menu_item('title', array(
 			'name' => 'elggpg_download',
-			'href' => 'elggpg/raw/'.$owner->username,
+			'href' => 'elggpg/download/'.$owner->username,
 			'text' => elgg_echo('elggpg:download'),
 			'link_class' => 'elgg-button elgg-button-action',
 	));
