@@ -24,8 +24,8 @@
 		'elggpg:type:sign' => 'To sign',
 		'elggpg:name'=>'Name',
 		'elggpg:email'=>'Email',
-		'elggpg:upload:unchanged'=>'Same public kay uploaded',
-		'elggpg:upload:imported'=>'Public key with ID %s imported',
+		'elggpg:upload:unchanged'=>'Same public key uploaded',
+		'elggpg:upload:imported'=>'Imported public key %s',
 		'elggpg:email:encrypted'=>'Receive encrypted email notifications',
 		'elggpg:comment'=>'Comment',
 		'elggpg:keyid'=>'Key ID',
@@ -36,9 +36,7 @@
 		'elggpg:messageforyou'=>'The message below has been encrypted for you',
 		'elggpg:encrypt:emails' => 'Do you want to receive all our e-mails encrypted with your GPG key?',
 		'elggpg:encrypt:site_messages' => 'Also all private messages?',
-		'elggpg:import:report'=>'[imported] => %d\n[unchanged] => %d\n    [newuserids] => %d\n    [newsubkeys] => %d\n    [secretimported] => %d\n    [secretunchanged] => %d\n    [newsignatures] => %d\n    [skippedkeys] => %d\n    [fingerprint] => %d' 
+		'elggpg:import:report'=>'Imported: %s\n Unchanged: %s\n New user ids: %s\n New subkeys: %s\n Secret imported: %s\n Secret unchanged: %s\n New signatures: %s\n Skipped keys: %s',
 	);
 					
-	add_translation("en",$english);
-
-?>
+	add_translation("en", $english);

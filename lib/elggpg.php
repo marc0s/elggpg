@@ -53,8 +53,8 @@ function elggpg_fp2keyid($fp) {
 }
 
 function elggpg_import_report($info) {
-	$yes = elgg_echo('yes');
-	$no  = elgg_echo('no');
+	$yes = elgg_echo('option:yes');
+	$no  = elgg_echo('option:no');
 	$search  = "\\n";
 	$replace = "<br />";
 	return str_replace($search, $replace, elgg_echo("elggpg:import:report", array(
@@ -66,7 +66,6 @@ function elggpg_import_report($info) {
 		$info['secretunchanged'] ? $yes : $no,
 		$info['newsignatures']   ? $yes : $no,
 		$info['skippedkeys']     ? $yes : $no,
-		$info['fingerprint'],
 	)));
 }
 
