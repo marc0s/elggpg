@@ -38,7 +38,7 @@ function elggpg_import_key($public_key, $user) {
 	if ($user_fp && $user_fp->value != $new_fp) {
 		update_metadata($user_fp->id, $user_fp->name, $new_fp, 'text', $user->guid, $access_id);
 		$info['imported'] = 1;
-	} elseif (!$userfp) {
+	} elseif (!$user_fp) {
 		create_metadata($user->guid, "openpgp_publickey", $new_fp, 'text', $user->guid, $access_id);
 		$info['imported'] = 1;
 	}
@@ -128,6 +128,23 @@ function elggpg_keyinfo($user) {
 }
 
 function elggpg_delete_key($user) {
+	
+	if (!$user->openpgp_publickey) {
+		return false;
+	}
+	
+	$count = elgg_get_entities_from_metadata(array(
+		'type' => 'user',
+		'metadata_name' => 'openpgp_publickey',
+		'metadata_value' => $user->openpgp_publickey,
+		'count' => true,
+	));
+	
+	if ($count > 1) {
+		$user->openpgp_publickey = NULL;
+		return true;
+	}
+	
 	$gpg = new gnupg();
 	$info = $gpg->deletekey($user->openpgp_publickey);
 	$user->openpgp_publickey = NULL;
