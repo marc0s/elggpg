@@ -33,7 +33,7 @@ if($owner->guid == elgg_get_logged_in_user_guid()) {
 				'name' => 'elggpg_delete',
 				'href' => 'action/elggpg/pubkey_delete?username='.$owner->username,
 				'text' => elgg_echo('delete'),
-				'link_class' => 'elgg-button elgg-button-action',
+				'link_class' => 'elgg-button elgg-button-delete',
 				'is_action' => true,
 				'confirm' => elgg_echo('elggpg:delete:confirm'),
 		));

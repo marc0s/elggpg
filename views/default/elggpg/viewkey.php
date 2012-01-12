@@ -13,39 +13,61 @@ $currentuser = $vars['user'];
 // new class
 elgg_load_library('elggpg');
 $info = elggpg_keyinfo($currentuser);
+$fingerprint = elgg_view('output/fingerprint', array('value' => $info['fingerprint']));
 
 if (!$info) {
 	echo '<p>'. elgg_echo("elggpg:nopublickey") . '</p>';
 	return false;
 }
 
-$key_id  = elgg_echo('elggpg:keyid');
+$name_label = elgg_echo('elggpg:label:name');
+$email_label = elgg_echo('elggpg:label:email');
+$comment_label = elgg_echo('elggpg:label:comment');
+$fingerprint_label = elgg_echo('elggpg:label:fingerprint');
+
+$subkey_id  = elgg_echo('elggpg:subkey:id');
 $type    = elgg_echo('elggpg:type');
 $created = elgg_echo('elggpg:created');
 $expires = elgg_echo('elggpg:expires');
 
-echo <<<HTML
-<div class="elgg-elggpg elgg-output">
-	<dl>
-		<dt>Name</dt>
-		<dd>{$info['name']}</dd>
-	</dl>
-	<dl>
-		<dt>E-mail</dt>
-		<dd>{$info['email']}</dd>
-	</dl>
-	<dl>
-		<dt>Comment</dt>
-		<dd>{$info['comment']}</dd>
-	</dl>
-	<dl>
-		<dt>Fingerprint</dt>
-		<dd>{$info['fingerprint']}</dd>
-	</dl>
-	<br/>
-	<h3>Subkeys</h3>
-	<table class="elgg-table mtm">
-	<th>$key_id</th><th>$type</th><th>$created</th><th>$expires</th>
+$key_info = <<<HTML
+<table class="elgg-table-alt">
+	<tr class="odd">
+		<td><strong>$name_label:</strong></td>
+		<td>{$info['name']}</td>
+	</tr>
+	<tr class="even">
+		<td><strong>$email_label:</strong></td>
+		<td>{$info['email']}</td>
+	</tr>
+	<tr class="odd">
+		<td><strong>$comment_label:</strong></td>
+		<td>{$info['comment']}</td>
+	</tr>
+	<tr class="even">
+		<td><strong>$fingerprint_label:</strong></td>
+		<td>$fingerprint</td>
+	</tr>
+</table>
+HTML;
+
+echo elgg_view_module('info', '', $key_info);
+
+echo elgg_view('output/url', array(
+	'class' => 'elggpg-subkeys-toggle',
+	'text' => elgg_echo('elggpg:subkey:showdetails'),
+	'href' => '',
+));
+echo '<br />';
+echo elgg_view('output/url', array(
+	'class' => 'elggpg-raw-toggle',
+	'text' => elgg_echo('elggpg:raw:show'),
+	'href' => "elggpg/raw/$currentuser->username",
+));
+
+$subkeys_info = <<<HTML
+<table id="elggpg-subkeys" class="elgg-table mtm hidden">
+	<th>$subkey_id</th><th>$type</th><th>$created</th><th>$expires</th>
 HTML;
 
 foreach ($info['subkeys'] as $subkey) {
@@ -62,13 +84,35 @@ foreach ($info['subkeys'] as $subkey) {
 	
 	$type = elgg_echo('elggpg:type:'.$subkey['type']);
 
-	echo <<<HTML
+	$subkeys_info .= <<<HTML
 	<tr><td>$keyid</td><td>$type</td><td>$created</td><td>$expires</td></tr>
 HTML;
 	
 }
 
-echo <<<HTML
+$subkeys_info .= <<<HTML
 </table>
-</div>
+HTML;
+
+echo elgg_view_module('inline', '', $subkeys_info);
+
+$textarea = '<textarea id="elggpg-raw" class="hidden" readonly="readonly"></textarea>';
+echo elgg_view_module('inline', '', $textarea);
+
+echo <<<HTML
+<script type="text/javascript">
+$(function() {
+	$('.elggpg-subkeys-toggle').click(function() {
+		$('#elggpg-subkeys').fadeToggle('slow');
+		return false;
+	});
+	$('.elggpg-raw-toggle').toggle(function() {
+		$('#elggpg-raw').load('/elggpg/raw/$currentuser->username').fadeIn();
+		return false;
+	}, function() {
+		$('#elggpg-raw').fadeOut();
+		return false;
+	});
+});
+</script>
 HTML;
