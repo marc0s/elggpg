@@ -17,7 +17,7 @@ $enabled = $enabled ? 'enabled' : 'disabled';
 $body = '<p>' . elgg_echo("elggpg:notifications:$enabled") . '</p>';
 $body .= elgg_view('output/url', array(
 	'text' => elgg_echo('elggpg:notifications:settings'),
-	'href' => elgg_get_site_url()."/settings/plugins/$owner->username",
+	'href' => elgg_get_site_url()."settings/plugins/$owner->username",
 	'is_trust' => true,
 ));
 
