@@ -13,8 +13,8 @@ if (!elggpg_haskey($user)) {
 }
 
 // set default values
-if (!$vars['entity']->getUserSetting('encrypt_site_messages', $user->guid)) {
-	$vars['entity']->setUserSetting('encrypt_site_messages', 'yes', $user->guid);
+if (!$vars['entity']->getUserSetting('encrypt_emails', $user->guid)) {
+	$vars['entity']->setUserSetting('encrypt_emails', 'yes', $user->guid);
 }
 if (!$vars['entity']->getUserSetting('encrypt_site_messages', $user->guid)) {
 	$vars['entity']->setUserSetting('encrypt_site_messages', 'no', $user->guid);
